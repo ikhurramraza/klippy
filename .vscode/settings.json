@@ -1,0 +1,11 @@
+{
+  "python.pythonPath": "venv/bin/python",
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.*pyc": true,
+    "**/venv": true
+  },
+  "python.formatting.autopep8Args": [
+    "--max-line-length=100"
+  ]
+}
