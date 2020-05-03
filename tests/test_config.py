@@ -30,6 +30,3 @@ class TestConfig(unittest.TestCase):
         expected = {'host': 'test.klippy', 'port': '12345', 'password': 'secret'}
         self.assertEqual(expected, self.subject.redis())
 
-
-if __name__ == '__main__':
-    unittest.main()
