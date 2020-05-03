@@ -38,7 +38,6 @@ def configure():
     password = click.prompt('Enter Redis password', default="")
     config.set_namespace(namespace)
     config.set_redis(host, port, password)
-    config.save()
 
 
 if __name__ == "__main__":

@@ -32,12 +32,14 @@ class Settings:
 
     def set_namespace(self, namespace):
         self.config['main']['namespace'] = namespace
+        self.__save()
 
     def set_redis(self, host, port, password):
         self.config['redis'] = {'host': host, 'port': port, 'password': password}
+        self.__save()
 
-    def save(self):
-        with open(config.PATH, 'w+') as configfile:
+    def __save(self):
+        with open(self.PATH, 'w+') as configfile:
             self.config.write(configfile)
 
     def __load(self):
