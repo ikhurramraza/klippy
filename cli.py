@@ -1,7 +1,7 @@
 import click
 
 from app.clipboard import RedisClipboard
-from app.config import config
+from app.config import Settings
 from app.version import VERSION
 
 
@@ -19,25 +19,23 @@ def cli():
 @cli.command(help="Copy the data from file or stdin.")
 @click.argument('file', required=False, type=click.File('rb'))
 def copy(file):
-    clipboard = RedisClipboard(config.redis())
-    clipboard.copy(file or click.get_binary_stream('stdin'))
+    RedisClipboard.instance().copy(file or click.get_binary_stream('stdin'))
 
 
 @cli.command(help="Paste the data to file or stdout.")
 @click.argument('file', required=False, type=click.File('wb'))
 def paste(file):
-    clipboard = RedisClipboard(config.redis())
-    clipboard.paste(file or click.get_binary_stream('stdout'))
+    RedisClipboard.instance().paste(file or click.get_binary_stream('stdout'))
 
 
-@cli.command(help=f"Configure settings file. ({config.PATH})")
+@cli.command(help=f"Configure settings file. ({Settings.PATH})")
 def configure():
-    namespace = click.prompt('Enter the name of namespace', default=config.namespace())
-    host = click.prompt('Enter Redis host', default=config.redis().get('host'))
-    port = click.prompt('Enter Redis port', default=config.redis().get('port'))
+    namespace = click.prompt('Enter the name of namespace', default=Settings.instance().namespace())
+    host = click.prompt('Enter Redis host', default=Settings.instance().redis().get('host'))
+    port = click.prompt('Enter Redis port', default=Settings.instance().redis().get('port'))
     password = click.prompt('Enter Redis password', default="")
-    config.set_namespace(namespace)
-    config.set_redis(host, port, password)
+    Settings.instance().set_namespace(namespace)
+    Settings.instance().set_redis(host, port, password)
 
 
 if __name__ == "__main__":

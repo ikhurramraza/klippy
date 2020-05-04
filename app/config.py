@@ -20,9 +20,16 @@ class Settings:
         'redis': REDIS_DEFAULTS,
     }
 
+    __instance = None
+
     def __init__(self):
         self.config = configparser.ConfigParser()
         self.__load()
+
+    @classmethod
+    def instance(cls):
+        cls.__instance = cls.__instance or cls()
+        return cls.__instance
 
     def redis(self):
         return dict(self.config['redis'])
@@ -47,6 +54,3 @@ class Settings:
             self.config.setdefault(key, value)
 
         self.config.read(self.PATH)
-
-
-config = Settings()

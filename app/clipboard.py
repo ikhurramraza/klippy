@@ -3,14 +3,18 @@ import click
 
 from pathlib import Path
 
-from app.config import config
+from app.config import Settings
 
 
 class Clipboard:
-    STORE_KEY = f"klippy.{config.namespace()}"
+    STORE_KEY = f"klippy.{Settings.instance().namespace()}"
 
-    def __init__(self, config):
-        self.config = config
+    __instance = None
+
+    @classmethod
+    def instance(cls):
+        cls.__instance = cls.__instance or cls()
+        return cls.__instance
 
     def copy(self, stream):
         pass
@@ -20,9 +24,8 @@ class Clipboard:
 
 
 class RedisClipboard(Clipboard):
-    def __init__(self, config):
-        super().__init__(config)
-        self.conn = redis.Redis(**self.config, socket_connect_timeout=3)
+    def __init__(self):
+        self.conn = redis.Redis(**Settings.instance().redis(), socket_connect_timeout=3)
 
     def copy(self, stream):
         try:

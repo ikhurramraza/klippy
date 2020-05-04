@@ -8,7 +8,7 @@ from app.clipboard import RedisClipboard
 
 class TestRediClipboard(unittest.TestCase):
     def setUp(self):
-        self.subject = RedisClipboard({})
+        self.subject = RedisClipboard().instance()
         self.subject.conn = fakeredis.FakeStrictRedis()
 
     def tearDown(self):
