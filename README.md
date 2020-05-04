@@ -37,7 +37,6 @@ klippy paste | cat
 
 ## Wishlist
 
-- Add tests
 - Introduce clipboard history
 
 ## Contributing
