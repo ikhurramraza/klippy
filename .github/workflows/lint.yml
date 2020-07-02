@@ -21,4 +21,4 @@ jobs:
           pip install pipenv
           pipenv install
       - name: Lint Code Base
-        uses: docker://github/super-linter:v3
+        uses: docker://github/super-linter:v3.2.0
