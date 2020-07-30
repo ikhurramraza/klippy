@@ -1,6 +1,8 @@
 import redis
 import click
 
+from pathlib import Path
+
 from app.config import Settings
 
 
