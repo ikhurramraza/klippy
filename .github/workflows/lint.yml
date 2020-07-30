@@ -15,3 +15,4 @@ jobs:
         uses: docker://github/super-linter:v3.4.0
         env:
           VALIDATE_MD: false
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
