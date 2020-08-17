@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 fakeredis = "*"
+isort = "*"
 pytest = "*"
 
 [packages]
