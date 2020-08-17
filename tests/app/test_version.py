@@ -1,6 +1,6 @@
 import app.version
 
 
-class TestVersion():
+class TestVersion:
     def test_version(self):
-        assert '0.2.0' == app.version.VERSION
+        assert "0.2.0" == app.version.VERSION

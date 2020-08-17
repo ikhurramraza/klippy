@@ -1,19 +1,16 @@
 {
-  "python.pythonPath": "venv/bin/python",
   "files.exclude": {
+    ".pytest_cache": true,
+    ".venv": true,
     "**/__pycache__": true,
-    "**/.pytest_cache": true,
-    "**/.*pyc": true,
-    "**/venv": true
+    "*.egg-info": true
   },
-  "python.formatting.autopep8Args": [
-    "--max-line-length=100"
-  ],
-  "python.testing.pytestArgs": [
-    "tests"
-  ],
-  "python.testing.unittestEnabled": false,
-  "python.testing.nosetestsEnabled": false,
+  "python.pythonPath": ".venv/bin/python",
   "python.testing.pytestEnabled": true,
-  "editor.tabSize": 4
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "editor.formatOnSave": true,
+  "python.linting.enabled": true,
+  "python.formatting.provider": "black"
 }

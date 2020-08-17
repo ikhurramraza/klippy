@@ -17,23 +17,23 @@ def cli():
 
 
 @cli.command(help="Copy the data from file or stdin.")
-@click.argument('file', required=False, type=click.File('rb'))
+@click.argument("file", required=False, type=click.File("rb"))
 def copy(file):
-    RedisClipboard.instance().copy(file or click.get_binary_stream('stdin'))
+    RedisClipboard.instance().copy(file or click.get_binary_stream("stdin"))
 
 
 @cli.command(help="Paste the data to file or stdout.")
-@click.argument('file', required=False, type=click.File('wb'))
+@click.argument("file", required=False, type=click.File("wb"))
 def paste(file):
-    RedisClipboard.instance().paste(file or click.get_binary_stream('stdout'))
+    RedisClipboard.instance().paste(file or click.get_binary_stream("stdout"))
 
 
 @cli.command(help=f"Configure settings file. ({Settings.PATH})")
 def configure():
-    namespace = click.prompt('Enter the name of namespace', default=Settings.instance().namespace())
-    host = click.prompt('Enter Redis host', default=Settings.instance().redis().get('host'))
-    port = click.prompt('Enter Redis port', default=Settings.instance().redis().get('port'))
-    password = click.prompt('Enter Redis password', default="")
+    namespace = click.prompt("Enter the name of namespace", default=Settings.instance().namespace())
+    host = click.prompt("Enter Redis host", default=Settings.instance().redis().get("host"))
+    port = click.prompt("Enter Redis port", default=Settings.instance().redis().get("port"))
+    password = click.prompt("Enter Redis password", default="")
     Settings.instance().set_namespace(namespace)
     Settings.instance().set_redis(host, port, password)
 
