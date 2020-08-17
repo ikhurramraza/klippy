@@ -6,18 +6,18 @@ class Settings:
     PATH = f"{Path.home()}/.klippy.ini"
 
     MAIN_DEFAULTS = {
-        'namespace': 'default',
+        "namespace": "default",
     }
 
     REDIS_DEFAULTS = {
-        'host': '127.0.0.1',
-        'port': '6379',
-        'password': '',
+        "host": "127.0.0.1",
+        "port": "6379",
+        "password": "",
     }
 
     DEFAULTS = {
-        'main': MAIN_DEFAULTS,
-        'redis': REDIS_DEFAULTS,
+        "main": MAIN_DEFAULTS,
+        "redis": REDIS_DEFAULTS,
     }
 
     __instance = None
@@ -32,21 +32,21 @@ class Settings:
         return cls.__instance
 
     def redis(self):
-        return dict(self.config['redis'])
+        return dict(self.config["redis"])
 
     def namespace(self):
-        return self.config['main']['namespace']
+        return self.config["main"]["namespace"]
 
     def set_namespace(self, namespace):
-        self.config['main']['namespace'] = namespace
+        self.config["main"]["namespace"] = namespace
         self.__save()
 
     def set_redis(self, host, port, password):
-        self.config['redis'] = {'host': host, 'port': port, 'password': password}
+        self.config["redis"] = {"host": host, "port": port, "password": password}
         self.__save()
 
     def __save(self):
-        with open(self.PATH, 'w+') as configfile:
+        with open(self.PATH, "w+") as configfile:
             self.config.write(configfile)
 
     def __load(self):

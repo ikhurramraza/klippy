@@ -1,7 +1,5 @@
-import redis
 import click
-
-from pathlib import Path
+import redis
 
 from app.config import Settings
 
@@ -31,10 +29,10 @@ class RedisClipboard(Clipboard):
         try:
             self.conn.set(self.STORE_KEY, stream.read())
         except redis.exceptions.TimeoutError:
-            click.ClickException('Connection timed out.').show()
+            click.ClickException("Connection timed out.").show()
 
     def paste(self, stream):
         try:
             stream.write(self.conn.get(self.STORE_KEY))
         except redis.exceptions.TimeoutError:
-            click.ClickException('Connection timed out.').show()
+            click.ClickException("Connection timed out.").show()
