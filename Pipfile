@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 fakeredis = "*"
 pytest = "*"
-pylint = "*"
 
 [packages]
 click = "*"
