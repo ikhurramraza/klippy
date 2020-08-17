@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 black = "==19.10b0"
 fakeredis = "*"
+flake8 = "*"
 isort = "*"
 pytest = "*"
 
