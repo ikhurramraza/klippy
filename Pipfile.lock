@@ -57,11 +57,11 @@
         },
         "fakeredis": {
             "hashes": [
-                "sha256:4d170886865a91dbc8b7f8cbd4e5d488f4c5f2f25dfae127f001617bbe9e8f97",
-                "sha256:647b2593d349d9d4e566c8dadb2e4c71ba35be5bdc4f1f7ac2d565a12a965053"
+                "sha256:790c85ad0f3b2967aba1f51767021bc59760fcb612159584be018ea7384f7fd2",
+                "sha256:fdfe06f277092d022c271fcaefdc1f0c8d9bfa8cb15374cae41d66a20bd96d2b"
             ],
             "index": "pypi",
-            "version": "==1.4.1"
+            "version": "==1.4.2"
         },
         "iniconfig": {
             "hashes": [
