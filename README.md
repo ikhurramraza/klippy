@@ -1,7 +1,5 @@
 # Klippy
 
-![Test](https://github.com/ikhurramraza/klippy/workflows/Test/badge.svg)
-
 A command line utility that acts like a cloud clipboard.
 
 ## Installation
