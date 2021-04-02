@@ -1,14 +1,14 @@
-# Klippy
+# 📋 Klippy
 
 A command line utility that acts like a cloud clipboard.
 
-## Installation
+## 💽 Installation
 
 ```bash
 pip install klippy
 ```
 
-## Usage
+## 📖 Usage
 
 ```bash
 # Configure namespace name and Redis credentials
@@ -27,16 +27,16 @@ klippy paste > file.txt
 klippy paste | cat
 ```
 
-## Wishlist
+## 🧞‍♂️ Wishlist
 
 - Introduce clipboard history
 
-## Contributing
+## 🤝 Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## License
+## ⚖️ License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
