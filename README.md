@@ -11,12 +11,6 @@ pip install klippy
 ## Usage
 
 ```bash
-# Find help
-klippy --help
-klippy configure --help
-klippy copy --help
-klippy paste --help
-
 # Configure namespace name and Redis credentials
 # To share a single Redis server among different people
 # or have multiple clipboards, use different namespaces.
