@@ -199,11 +199,11 @@
         },
         "fakeredis": {
             "hashes": [
-                "sha256:49375c630981dd4045d9a92e2709fcd4476c91f927e0228493eefa625e705133",
-                "sha256:c4ca2be686e7e7637756ccc7dcad8472a5e4866b065431107d7a4b7a250d4e6f"
+                "sha256:2bc92cece6535961a465991d01841888e0fe2b742ca49aa97ce247b04c9a0ecc",
+                "sha256:e71ca849167052f42f5469a764def9ef35ccffd04773d30b017a7adcc12940c1"
             ],
             "index": "pypi",
-            "version": "==1.7.5"
+            "version": "==1.7.6.1"
         },
         "flake8": {
             "hashes": [
@@ -341,7 +341,7 @@
                 "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
                 "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
             ],
-            "markers": "python_version < '3.11'",
+            "markers": "python_version >= '3.7'",
             "version": "==2.0.1"
         },
         "typing-extensions": {
