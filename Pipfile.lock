@@ -119,11 +119,11 @@
         },
         "fakeredis": {
             "hashes": [
-                "sha256:6d1dc2417921b7ce56a80877afa390d6335a3154146f201a86e3a14417bdc79e",
-                "sha256:fb3186cbbe4c549f922b0f08eb84b09c0e51ecf8efbed3572d20544254f93a97"
+                "sha256:1329b6150794d4f45d82cb643cc7e8192b33bdb3dc829fb9dcfdf2e82696b2dc",
+                "sha256:f85c535d38946d436f8fef14cb946ea2774c35437991ece72f2bc9cbfc9e7e65"
             ],
             "index": "pypi",
-            "version": "==2.0.0"
+            "version": "==2.1.0"
         },
         "flake8": {
             "hashes": [
