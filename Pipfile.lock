@@ -99,11 +99,11 @@
         },
         "fakeredis": {
             "hashes": [
-                "sha256:53f00f44f771d2b794f1ea036fa07a33476ab7368f1b0e908daab3eff80336f6",
-                "sha256:df7bb44fb9e593970c626325230e1c321f954ce7b204d4c4452eae5233d554ed"
+                "sha256:43c5e54b6dd73df8c5348c4f8d6bacd78670f3281a8f04073ed62e2da2efb2b8",
+                "sha256:9d453895ceef312d4043e1b5ed7aa9709443ff1388dc55b9fa6c2dd74f4d1e68"
             ],
             "index": "pypi",
-            "version": "==2.13.0"
+            "version": "==2.14.1"
         },
         "flake8": {
             "hashes": [
@@ -226,11 +226,11 @@
         },
         "typing-extensions": {
             "hashes": [
-                "sha256:5cb5f4a79139d699607b3ef622a1dedafa84e115ab0024e0d9c044a9479ca7cb",
-                "sha256:fb33085c39dd998ac16d1431ebc293a8b3eedd00fd4a32de0ff79002c19511b4"
+                "sha256:88a4153d8505aabbb4e13aacb7c486c2b4a33ca3b3f807914a9b4c844c471c26",
+                "sha256:d91d5919357fe7f681a9f2b5b4cb2a5f1ef0a1e9f59c4d8ff0d3491e05c0ffd5"
             ],
             "markers": "python_version < '3.10'",
-            "version": "==4.5.0"
+            "version": "==4.6.3"
         }
     }
 }
