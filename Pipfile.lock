@@ -18,11 +18,11 @@
     "default": {
         "async-timeout": {
             "hashes": [
-                "sha256:4640d96be84d82d02ed59ea2b7105a0f7b33abe8703703cd0ab0bf87c427522f",
-                "sha256:7405140ff1230c310e51dc27b3145b9092d659ce68ff733fb0cefe3ee42be028"
+                "sha256:49675ec889daacfe65ff66d2dde7dd1447a6f4b2f23721022e4ba121f8772a85",
+                "sha256:904719a4bd6e0520047d0ddae220aabee67b877f7ca17bf8cea20f67f6247ae0"
             ],
             "markers": "python_full_version < '3.11.3'",
-            "version": "==4.0.3"
+            "version": "==5.0.0"
         },
         "click": {
             "hashes": [
@@ -35,12 +35,12 @@
         },
         "redis": {
             "hashes": [
-                "sha256:b756df1e4a3858fcc0ef861f3fc53623a96c41e2b1f5304e09e0fe758d333d40",
-                "sha256:fd4fccba0d7f6aa48c58a78d76ddb4afc698f5da4a2c1d03d916e4fd7ab88cdd"
+                "sha256:0b1087665a771b1ff2e003aa5bdd354f15a70c9e25d5a7dbf9c722c16528a7b0",
+                "sha256:ae174f2bb3b1bf2b09d54bf3e51fbc1469cf6c10aa03e21141f51969801a7897"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==5.1.0"
+            "version": "==5.2.0"
         }
     },
     "develop": {
