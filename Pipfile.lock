@@ -216,12 +216,12 @@
         },
         "fakeredis": {
             "hashes": [
-                "sha256:dd8246db159f0b66a1ced7800c9d5ef07769e3d2fde44b389a57f2ce2834e444",
-                "sha256:e80c8886db2e47ba784f7dfe66aad6cd2eab76093c6bfda50041e5bc890d46cf"
+                "sha256:d7bc9a69d21df108a6451bbffee23b3eba432c21a654afc7ff2d295428ec5770",
+                "sha256:de535f3f9ccde1c56672ab2fdd6a8efbc4f2619fc2f1acc87b8737177d71c965"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.7'",
-            "version": "==2.32.1"
+            "version": "==2.33.0"
         },
         "flake8": {
             "hashes": [
