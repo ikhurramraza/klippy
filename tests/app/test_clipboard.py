@@ -26,6 +26,12 @@ class TestRediClipboard(unittest.TestCase):
         stream.seek(0)
         self.assertEqual(b"test.paste", stream.read())
 
+    def test_paste_empty(self):
+        stream = io.BytesIO()
+        self.subject.paste(stream)
+        stream.seek(0)
+        self.assertEqual(b"", stream.read())
+
     def test_copy_paste(self):
         in_stream = io.BytesIO(b"some.url.dot.com")
         out_stream = io.BytesIO()
