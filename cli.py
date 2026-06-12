@@ -1,4 +1,7 @@
+import os
+
 import click
+import redis
 
 from app.clipboard import RedisClipboard
 from app.config import Settings
@@ -36,6 +39,23 @@ def configure():
     password = click.prompt("Enter Redis password", default="")
     Settings.instance().set_namespace(namespace)
     Settings.instance().set_redis(host, port, password)
+
+
+@cli.command(help="Check the configuration and the connection to the Redis server.")
+def doctor():
+    config_status = "found" if os.path.exists(Settings.PATH) else "not found, using defaults"
+    click.echo(f"Settings file: {Settings.PATH} ({config_status})")
+    click.echo(f"Namespace: {Settings.instance().namespace()}")
+
+    redis_settings = Settings.instance().redis()
+    click.echo(f"Redis server: {redis_settings['host']}:{redis_settings['port']}")
+
+    try:
+        RedisClipboard.instance().ping()
+    except redis.exceptions.RedisError as error:
+        raise click.ClickException(f"Connection failed. ({error})")
+
+    click.secho("Connection: OK", fg="green")
 
 
 if __name__ == "__main__":

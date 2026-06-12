@@ -50,6 +50,27 @@ class TestCliConfigure(unittest.TestCase):
         self.assertEqual(0, result.exit_code)
 
 
+class TestCliDoctor(unittest.TestCase):
+    def setUp(self):
+        RedisClipboard.instance().conn = fakeredis.FakeStrictRedis()
+
+    def test_success(self):
+        result = CliRunner().invoke(cli.doctor)
+        self.assertFalse(result.exception)
+        self.assertEqual(0, result.exit_code)
+        self.assertIn(f"Settings file: {Settings.PATH}", result.output)
+        self.assertIn(f"Namespace: {Settings.instance().namespace()}", result.output)
+        self.assertIn("Connection: OK", result.output)
+
+    def test_connection_failure(self):
+        server = fakeredis.FakeServer()
+        server.connected = False
+        RedisClipboard.instance().conn = fakeredis.FakeStrictRedis(server=server)
+        result = CliRunner().invoke(cli.doctor)
+        self.assertEqual(1, result.exit_code)
+        self.assertIn("Connection failed.", result.output)
+
+
 class TestCliCopyPaste(unittest.TestCase):
     def setUp(self):
         RedisClipboard.instance().conn = fakeredis.FakeStrictRedis()

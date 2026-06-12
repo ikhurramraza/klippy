@@ -20,10 +20,16 @@ class Clipboard:
     def paste(self, stream):
         pass
 
+    def ping(self):
+        pass
+
 
 class RedisClipboard(Clipboard):
     def __init__(self):
         self.conn = redis.Redis(**Settings.instance().redis(), socket_connect_timeout=3)
+
+    def ping(self):
+        self.conn.ping()
 
     def copy(self, stream):
         try:
