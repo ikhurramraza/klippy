@@ -1,9 +1,10 @@
 import configparser
+import os
 from pathlib import Path
 
 
 class Settings:
-    PATH = f"{Path.home()}/.klippy.ini"
+    PATH = f"{os.environ.get('XDG_CONFIG_HOME') or f'{Path.home()}/.config'}/klippy/config.ini"
 
     MAIN_DEFAULTS = {
         "namespace": "default",
@@ -46,6 +47,7 @@ class Settings:
         self.__save()
 
     def __save(self):
+        Path(self.PATH).parent.mkdir(parents=True, exist_ok=True)
         with open(self.PATH, "w+") as configfile:
             self.config.write(configfile)
 

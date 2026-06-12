@@ -1,19 +1,19 @@
 import os
+import shutil
 import unittest
 
 from app.config import Settings
 
 
 class TestConfig(unittest.TestCase):
-    TEMP_CONFIG_PATH = "tests/.tmp.ini"
+    TEMP_CONFIG_PATH = "tests/.tmp/config.ini"
 
     def setUp(self):
         Settings.PATH = self.TEMP_CONFIG_PATH
         self.subject = Settings()
 
     def tearDown(self):
-        if os.path.exists(Settings.PATH):
-            os.remove(Settings.PATH)
+        shutil.rmtree("tests/.tmp", ignore_errors=True)
 
     def test_defaults(self):
         expected_namespace = "default"
@@ -29,3 +29,7 @@ class TestConfig(unittest.TestCase):
         self.subject.set_redis("test.klippy", "12345", "secret")
         expected = {"host": "test.klippy", "port": "12345", "password": "secret"}
         self.assertEqual(expected, self.subject.redis())
+
+    def test_save_creates_parent_directories(self):
+        self.subject.set_namespace("test")
+        self.assertTrue(os.path.exists(self.TEMP_CONFIG_PATH))
