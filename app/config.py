@@ -1,9 +1,12 @@
 import configparser
+import os
+import shutil
 from pathlib import Path
 
 
 class Settings:
-    PATH = f"{Path.home()}/.klippy.ini"
+    LEGACY_PATH = f"{Path.home()}/.klippy.ini"
+    PATH = f"{os.environ.get('XDG_CONFIG_HOME') or f'{Path.home()}/.config'}/klippy/config.ini"
 
     MAIN_DEFAULTS = {
         "namespace": "default",
@@ -46,6 +49,7 @@ class Settings:
         self.__save()
 
     def __save(self):
+        Path(self.PATH).parent.mkdir(parents=True, exist_ok=True)
         with open(self.PATH, "w+") as configfile:
             self.config.write(configfile)
 
@@ -53,4 +57,12 @@ class Settings:
         for key, value in self.DEFAULTS.items():
             self.config.setdefault(key, value)
 
+        self.__migrate_legacy_config()
         self.config.read(self.PATH)
+
+    def __migrate_legacy_config(self):
+        if os.path.exists(self.PATH) or not os.path.exists(self.LEGACY_PATH):
+            return
+
+        Path(self.PATH).parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(self.LEGACY_PATH, self.PATH)
