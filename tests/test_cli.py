@@ -11,11 +11,9 @@ from app.config import Settings
 
 class TestCliConfigure(unittest.TestCase):
     TEMP_CONFIG_PATH = "tests/.tmp.ini"
-    TEMP_LEGACY_CONFIG_PATH = "tests/.tmp.legacy.ini"
 
     def setUp(self):
         Settings.PATH = self.TEMP_CONFIG_PATH
-        Settings.LEGACY_PATH = self.TEMP_LEGACY_CONFIG_PATH
         self.__run_with_sample_prompt_value()
 
     def tearDown(self):
