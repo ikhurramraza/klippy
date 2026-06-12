@@ -43,7 +43,12 @@ def configure():
     namespace = click.prompt("Enter the name of namespace", default=settings.namespace())
     host = click.prompt("Enter Redis host", default=settings.redis().get("host"))
     port = click.prompt("Enter Redis port", default=settings.redis().get("port"))
-    password = click.prompt("Enter Redis password", default="")
+    password = click.prompt(
+        "Enter Redis password",
+        default=settings.redis().get("password", ""),
+        hide_input=True,
+        show_default=False,
+    )
     settings.set_namespace(namespace)
     settings.set_redis(host, port, password)
 
