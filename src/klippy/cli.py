@@ -3,9 +3,9 @@ import os
 import click
 import redis
 
-from app.clipboard import RedisClipboard
-from app.config import Settings
-from app.version import VERSION
+from klippy.clipboard import RedisClipboard
+from klippy.config import Settings
+from klippy.version import VERSION
 
 
 @click.group()

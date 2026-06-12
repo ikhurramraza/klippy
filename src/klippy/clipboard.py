@@ -1,7 +1,7 @@
 import click
 import redis
 
-from app.config import Settings
+from klippy.config import Settings
 
 
 class Clipboard:
