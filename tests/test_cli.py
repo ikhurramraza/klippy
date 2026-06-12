@@ -57,12 +57,22 @@ class TestCliConfigure(CliTestCase):
             )
             self.assertEqual(expected, f.read())
 
+    def test_password_is_not_echoed(self):
+        self.assertNotIn("secret-password", self.configure_result.output)
+
+    def test_reconfigure_preserves_password(self):
+        result = CliRunner().invoke(cli.configure, input="\n\n\n\n")
+        self.assertFalse(result.exception)
+        self.assertEqual(0, result.exit_code)
+        self.assertEqual("secret-password", Settings().redis()["password"])
+        self.assertNotIn("secret-password", result.output)
+
     def __run_with_sample_prompt_value(self):
         prompt_input = "my_namespace\n" "test.redis.io\n" "12345\n" "secret-password\n"
 
-        result = CliRunner().invoke(cli.configure, input=prompt_input)
-        self.assertFalse(result.exception)
-        self.assertEqual(0, result.exit_code)
+        self.configure_result = CliRunner().invoke(cli.configure, input=prompt_input)
+        self.assertFalse(self.configure_result.exception)
+        self.assertEqual(0, self.configure_result.exit_code)
 
 
 class TestCliDoctor(CliTestCase):
