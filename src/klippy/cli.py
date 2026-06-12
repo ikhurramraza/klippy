@@ -1,5 +1,6 @@
 import os
 import re
+from typing import BinaryIO
 
 import click
 import redis
@@ -11,7 +12,7 @@ from klippy.version import VERSION
 
 @click.group()
 @click.version_option(VERSION)
-def cli():
+def cli() -> None:
     """A command line utility that acts like a cloud clipboard.
 
     Good to know: A single Redis server can be shared among different people
@@ -20,7 +21,7 @@ def cli():
     pass
 
 
-def parse_duration(ctx, param, value):
+def parse_duration(ctx: click.Context, param: click.Parameter, value: str | None) -> int | None:
     if value is None:
         return None
 
@@ -44,33 +45,33 @@ def parse_duration(ctx, param, value):
     callback=parse_duration,
     help="Expire the clip after a duration, e.g. 90s, 5m, 2h, 1d.",
 )
-def copy(file, expire):
+def copy(file: BinaryIO | None, expire: int | None) -> None:
     try:
         RedisClipboard(Settings()).copy(file or click.get_binary_stream("stdin"), expire=expire)
     except redis.exceptions.RedisError as error:
-        raise click.ClickException(f"Copy failed, try 'klippy doctor'. ({error})")
+        raise click.ClickException(f"Copy failed, try 'klippy doctor'. ({error})") from error
 
 
 @cli.command(help="Paste the data to file or stdout.")
 @click.argument("file", required=False, type=click.File("wb"))
-def paste(file):
+def paste(file: BinaryIO | None) -> None:
     try:
         RedisClipboard(Settings()).paste(file or click.get_binary_stream("stdout"))
     except redis.exceptions.RedisError as error:
-        raise click.ClickException(f"Paste failed, try 'klippy doctor'. ({error})")
+        raise click.ClickException(f"Paste failed, try 'klippy doctor'. ({error})") from error
 
 
 @cli.command(help="Clear the clipboard.")
-def clear():
+def clear() -> None:
     try:
         RedisClipboard(Settings()).clear()
     except redis.exceptions.RedisError as error:
-        raise click.ClickException(f"Clear failed, try 'klippy doctor'. ({error})")
+        raise click.ClickException(f"Clear failed, try 'klippy doctor'. ({error})") from error
     click.echo("Clipboard cleared.")
 
 
 @cli.command(help=f"Configure settings file. ({Settings.PATH})")
-def configure():
+def configure() -> None:
     settings = Settings()
     namespace = click.prompt("Enter the name of namespace", default=settings.namespace())
     host = click.prompt("Enter Redis host", default=settings.redis().get("host"))
@@ -86,7 +87,7 @@ def configure():
 
 
 @cli.command(help="Check the configuration and the connection to the Redis server.")
-def doctor():
+def doctor() -> None:
     settings = Settings()
 
     config_status = "found" if os.path.exists(Settings.PATH) else "not found, using defaults"
@@ -99,7 +100,7 @@ def doctor():
     try:
         RedisClipboard(settings).ping()
     except redis.exceptions.RedisError as error:
-        raise click.ClickException(f"Connection failed. ({error})")
+        raise click.ClickException(f"Connection failed. ({error})") from error
 
     click.secho("Connection: OK", fg="green")
 
