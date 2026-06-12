@@ -4,15 +4,19 @@ import unittest
 import fakeredis
 
 from klippy.clipboard import RedisClipboard
+from klippy.config import Settings
 
 
-class TestRediClipboard(unittest.TestCase):
+class TestRedisClipboard(unittest.TestCase):
     def setUp(self):
-        self.subject = RedisClipboard().instance()
+        self.original_settings_path = Settings.PATH
+        Settings.PATH = "tests/.tmp.ini"
+        self.subject = RedisClipboard(Settings())
         self.subject.conn = fakeredis.FakeStrictRedis()
 
     def tearDown(self):
         self.subject.conn.close()
+        Settings.PATH = self.original_settings_path
 
     def test_copy(self):
         stream = io.BytesIO(b"test.copy")
