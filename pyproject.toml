@@ -21,9 +21,8 @@ dynamic = ["version"]
 dev = [
     "black==26.5.1",
     "fakeredis",
-    "flake8",
-    "isort",
     "pytest",
+    "ruff",
 ]
 
 [project.urls]
@@ -39,4 +38,18 @@ where = ["src"]
 version = { attr = "klippy.version.VERSION" }
 
 [tool.black]
-line-length=100
+line-length = 100
+target-version = ["py314"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["B", "C90", "E", "F", "W", "I"]
+ignore = ["E501"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 18
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

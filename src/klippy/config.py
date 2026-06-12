@@ -21,30 +21,30 @@ class Settings:
         "redis": REDIS_DEFAULTS,
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.config = configparser.ConfigParser()
         self.__load()
 
-    def redis(self):
+    def redis(self) -> dict[str, str]:
         return dict(self.config["redis"])
 
-    def namespace(self):
+    def namespace(self) -> str:
         return self.config["main"]["namespace"]
 
-    def set_namespace(self, namespace):
+    def set_namespace(self, namespace: str) -> None:
         self.config["main"]["namespace"] = namespace
         self.__save()
 
-    def set_redis(self, host, port, password):
+    def set_redis(self, host: str, port: str, password: str) -> None:
         self.config["redis"] = {"host": host, "port": port, "password": password}
         self.__save()
 
-    def __save(self):
+    def __save(self) -> None:
         Path(self.PATH).parent.mkdir(parents=True, exist_ok=True)
         with open(self.PATH, "w+") as configfile:
             self.config.write(configfile)
 
-    def __load(self):
+    def __load(self) -> None:
         for key, value in self.DEFAULTS.items():
             self.config.setdefault(key, value)
 
