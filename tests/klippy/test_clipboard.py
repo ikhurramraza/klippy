@@ -3,7 +3,7 @@ import unittest
 
 import fakeredis
 
-from app.clipboard import RedisClipboard
+from klippy.clipboard import RedisClipboard
 
 
 class TestRediClipboard(unittest.TestCase):

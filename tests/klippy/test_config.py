@@ -2,7 +2,7 @@ import os
 import shutil
 import unittest
 
-from app.config import Settings
+from klippy.config import Settings
 
 
 class TestConfig(unittest.TestCase):

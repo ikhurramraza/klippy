@@ -4,9 +4,9 @@ import unittest
 import fakeredis
 from click.testing import CliRunner
 
-import cli
-from app.clipboard import RedisClipboard
-from app.config import Settings
+from klippy import cli
+from klippy.clipboard import RedisClipboard
+from klippy.config import Settings
 
 
 class TestCliConfigure(unittest.TestCase):

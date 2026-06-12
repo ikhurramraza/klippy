@@ -1,2 +1,33 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "klippy"
+description = "A command line utility that acts like a cloud clipboard."
+readme = "README.md"
+authors = [{ name = "Khurram Raza", email = "ikhurramraza@gmail.com" }]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["cloud", "clipboard"]
+requires-python = ">=3.14"
+dependencies = [
+    "click",
+    "redis",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/ikhurramraza/klippy"
+
+[project.scripts]
+klippy = "klippy.cli:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "klippy.version.VERSION" }
+
 [tool.black]
 line-length=100
