@@ -1,4 +1,5 @@
 import os
+import re
 
 import click
 import redis
@@ -19,11 +20,33 @@ def cli():
     pass
 
 
+def parse_duration(ctx, param, value):
+    if value is None:
+        return None
+
+    match = re.fullmatch(r"(\d+)([smhd])", value)
+    if not match:
+        raise click.BadParameter("expected a number followed by a unit, e.g. 90s, 5m, 2h, 1d")
+
+    seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400}
+    seconds = int(match.group(1)) * seconds_per_unit[match.group(2)]
+    if seconds == 0:
+        raise click.BadParameter("duration must be greater than zero")
+
+    return seconds
+
+
 @cli.command(help="Copy the data from file or stdin.")
 @click.argument("file", required=False, type=click.File("rb"))
-def copy(file):
+@click.option(
+    "--expire",
+    "-e",
+    callback=parse_duration,
+    help="Expire the clip after a duration, e.g. 90s, 5m, 2h, 1d.",
+)
+def copy(file, expire):
     try:
-        RedisClipboard(Settings()).copy(file or click.get_binary_stream("stdin"))
+        RedisClipboard(Settings()).copy(file or click.get_binary_stream("stdin"), expire=expire)
     except redis.exceptions.RedisError as error:
         raise click.ClickException(f"Copy failed, try 'klippy doctor'. ({error})")
 
@@ -35,6 +58,15 @@ def paste(file):
         RedisClipboard(Settings()).paste(file or click.get_binary_stream("stdout"))
     except redis.exceptions.RedisError as error:
         raise click.ClickException(f"Paste failed, try 'klippy doctor'. ({error})")
+
+
+@cli.command(help="Clear the clipboard.")
+def clear():
+    try:
+        RedisClipboard(Settings()).clear()
+    except redis.exceptions.RedisError as error:
+        raise click.ClickException(f"Clear failed, try 'klippy doctor'. ({error})")
+    click.echo("Clipboard cleared.")
 
 
 @cli.command(help=f"Configure settings file. ({Settings.PATH})")

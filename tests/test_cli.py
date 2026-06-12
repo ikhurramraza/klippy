@@ -92,6 +92,23 @@ class TestCliDoctor(CliTestCase):
 
 
 class TestCliCopyPaste(CliTestCase):
+    def test_copy_with_expire(self):
+        result = CliRunner().invoke(cli.copy, ["--expire", "5m"], input=b"sample")
+        self.assertEqual(0, result.exit_code)
+        conn = fakeredis.FakeStrictRedis(server=self.server)
+        self.assertAlmostEqual(300, conn.ttl("klippy.default"), delta=30)
+
+    def test_copy_with_expire_in_seconds(self):
+        result = CliRunner().invoke(cli.copy, ["-e", "90s"], input=b"sample")
+        self.assertEqual(0, result.exit_code)
+        conn = fakeredis.FakeStrictRedis(server=self.server)
+        self.assertAlmostEqual(90, conn.ttl("klippy.default"), delta=30)
+
+    def test_copy_with_invalid_expire(self):
+        for invalid in ["abc", "90", "5x", "0s"]:
+            result = CliRunner().invoke(cli.copy, ["--expire", invalid], input=b"sample")
+            self.assertEqual(2, result.exit_code)
+
     def test_copy_connection_failure(self):
         self.server.connected = False
         result = CliRunner().invoke(cli.copy, input=b"sample")
@@ -121,3 +138,23 @@ class TestCliCopyPaste(CliTestCase):
 
             with open("output.dat", "rb") as output_file:
                 self.assertEqual(sample_data, output_file.read())
+
+
+class TestCliClear(CliTestCase):
+    def test_clear(self):
+        runner = CliRunner()
+        result = runner.invoke(cli.copy, input=b"sample")
+        self.assertEqual(0, result.exit_code)
+
+        result = runner.invoke(cli.clear)
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("Clipboard cleared.", result.output)
+
+        conn = fakeredis.FakeStrictRedis(server=self.server)
+        self.assertIsNone(conn.get("klippy.default"))
+
+    def test_clear_connection_failure(self):
+        self.server.connected = False
+        result = CliRunner().invoke(cli.clear)
+        self.assertEqual(1, result.exit_code)
+        self.assertIn("Clear failed", result.output)
