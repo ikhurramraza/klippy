@@ -16,6 +16,9 @@ pip install klippy
 # or have multiple clipboards, use different namespaces.
 klippy configure
 
+# Check the configuration and the connection to the Redis server
+klippy doctor
+
 # Copy data to the cloud clipboard (Redis database)
 klippy copy file.png
 klippy copy < file.txt
