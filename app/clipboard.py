@@ -33,6 +33,8 @@ class RedisClipboard(Clipboard):
 
     def paste(self, stream):
         try:
-            stream.write(self.conn.get(self.STORE_KEY))
+            data = self.conn.get(self.STORE_KEY)
+            if data is not None:
+                stream.write(data)
         except redis.exceptions.TimeoutError:
             click.ClickException("Connection timed out.").show()
