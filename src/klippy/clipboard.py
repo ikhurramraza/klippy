@@ -12,10 +12,13 @@ class RedisClipboard:
     def ping(self):
         self.conn.ping()
 
-    def copy(self, stream):
-        self.conn.set(self.store_key(), stream.read())
+    def copy(self, stream, expire=None):
+        self.conn.set(self.store_key(), stream.read(), ex=expire)
 
     def paste(self, stream):
         data = self.conn.get(self.store_key())
         if data is not None:
             stream.write(data)
+
+    def clear(self):
+        self.conn.delete(self.store_key())

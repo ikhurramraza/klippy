@@ -36,6 +36,16 @@ class TestRedisClipboard(unittest.TestCase):
         stream.seek(0)
         self.assertEqual(b"", stream.read())
 
+    def test_copy_with_expire(self):
+        stream = io.BytesIO(b"test.expire")
+        self.subject.copy(stream, expire=60)
+        self.assertEqual(60, self.subject.conn.ttl(self.subject.store_key()))
+
+    def test_clear(self):
+        self.subject.conn.set(self.subject.store_key(), b"test.clear")
+        self.subject.clear()
+        self.assertIsNone(self.subject.conn.get(self.subject.store_key()))
+
     def test_copy_paste(self):
         in_stream = io.BytesIO(b"some.url.dot.com")
         out_stream = io.BytesIO()

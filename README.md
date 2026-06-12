@@ -24,10 +24,16 @@ klippy copy file.png
 klippy copy < file.txt
 echo "$PATH" | klippy copy
 
+# Copy data that expires after a duration (e.g. 90s, 5m, 2h, 1d)
+klippy copy --expire 1h file.png
+
 # Paste data from the clipboard (Redis database)
 klippy paste file.png
 klippy paste > file.txt
 klippy paste | cat
+
+# Clear the clipboard
+klippy clear
 ```
 
 ## 🧞‍♂️ Wishlist
