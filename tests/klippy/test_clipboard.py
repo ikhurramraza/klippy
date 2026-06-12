@@ -17,10 +17,10 @@ class TestRediClipboard(unittest.TestCase):
     def test_copy(self):
         stream = io.BytesIO(b"test.copy")
         self.subject.copy(stream)
-        self.assertEqual(b"test.copy", self.subject.conn.get(self.subject.STORE_KEY))
+        self.assertEqual(b"test.copy", self.subject.conn.get(self.subject.store_key()))
 
     def test_paste(self):
-        self.subject.conn.set(self.subject.STORE_KEY, b"test.paste")
+        self.subject.conn.set(self.subject.store_key(), b"test.paste")
         stream = io.BytesIO()
         self.subject.paste(stream)
         stream.seek(0)
