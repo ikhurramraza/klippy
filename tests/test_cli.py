@@ -82,6 +82,18 @@ class TestCliDoctor(CliTestCase):
 
 
 class TestCliCopyPaste(CliTestCase):
+    def test_copy_connection_failure(self):
+        self.server.connected = False
+        result = CliRunner().invoke(cli.copy, input=b"sample")
+        self.assertEqual(1, result.exit_code)
+        self.assertIn("Copy failed", result.output)
+
+    def test_paste_connection_failure(self):
+        self.server.connected = False
+        result = CliRunner().invoke(cli.paste)
+        self.assertEqual(1, result.exit_code)
+        self.assertIn("Paste failed", result.output)
+
     def test_flow(self):
         runner = CliRunner()
         sample_data = os.urandom(1024)

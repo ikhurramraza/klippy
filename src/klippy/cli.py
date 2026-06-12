@@ -22,13 +22,19 @@ def cli():
 @cli.command(help="Copy the data from file or stdin.")
 @click.argument("file", required=False, type=click.File("rb"))
 def copy(file):
-    RedisClipboard(Settings()).copy(file or click.get_binary_stream("stdin"))
+    try:
+        RedisClipboard(Settings()).copy(file or click.get_binary_stream("stdin"))
+    except redis.exceptions.RedisError as error:
+        raise click.ClickException(f"Copy failed, try 'klippy doctor'. ({error})")
 
 
 @cli.command(help="Paste the data to file or stdout.")
 @click.argument("file", required=False, type=click.File("wb"))
 def paste(file):
-    RedisClipboard(Settings()).paste(file or click.get_binary_stream("stdout"))
+    try:
+        RedisClipboard(Settings()).paste(file or click.get_binary_stream("stdout"))
+    except redis.exceptions.RedisError as error:
+        raise click.ClickException(f"Paste failed, try 'klippy doctor'. ({error})")
 
 
 @cli.command(help=f"Configure settings file. ({Settings.PATH})")

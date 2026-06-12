@@ -1,4 +1,3 @@
-import click
 import redis
 
 
@@ -14,15 +13,9 @@ class RedisClipboard:
         self.conn.ping()
 
     def copy(self, stream):
-        try:
-            self.conn.set(self.store_key(), stream.read())
-        except redis.exceptions.TimeoutError:
-            click.ClickException("Connection timed out.").show()
+        self.conn.set(self.store_key(), stream.read())
 
     def paste(self, stream):
-        try:
-            data = self.conn.get(self.store_key())
-            if data is not None:
-                stream.write(data)
-        except redis.exceptions.TimeoutError:
-            click.ClickException("Connection timed out.").show()
+        data = self.conn.get(self.store_key())
+        if data is not None:
+            stream.write(data)
