@@ -1,24 +1,39 @@
 import os
 import unittest
+from unittest import mock
 
 import fakeredis
 from click.testing import CliRunner
 
 from klippy import cli
-from klippy.clipboard import RedisClipboard
 from klippy.config import Settings
 
 
-class TestCliConfigure(unittest.TestCase):
+class CliTestCase(unittest.TestCase):
     TEMP_CONFIG_PATH = "tests/.tmp.ini"
 
     def setUp(self):
+        self.original_settings_path = Settings.PATH
         Settings.PATH = self.TEMP_CONFIG_PATH
-        self.__run_with_sample_prompt_value()
+
+        self.server = fakeredis.FakeServer()
+        patcher = mock.patch(
+            "klippy.clipboard.redis.Redis",
+            lambda **kwargs: fakeredis.FakeStrictRedis(server=self.server),
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def tearDown(self):
         if os.path.exists(Settings.PATH):
             os.remove(Settings.PATH)
+        Settings.PATH = self.original_settings_path
+
+
+class TestCliConfigure(CliTestCase):
+    def setUp(self):
+        super().setUp()
+        self.__run_with_sample_prompt_value()
 
     def test_settings(self):
         expected_namespace = "my_namespace"
@@ -27,8 +42,8 @@ class TestCliConfigure(unittest.TestCase):
             "port": "12345",
             "password": "secret-password",
         }
-        self.assertEqual(expected_namespace, Settings.instance().namespace())
-        self.assertEqual(expected_redis, Settings.instance().redis())
+        self.assertEqual(expected_namespace, Settings().namespace())
+        self.assertEqual(expected_redis, Settings().redis())
 
     def test_config_file(self):
         with open(self.TEMP_CONFIG_PATH, "r") as f:
@@ -50,31 +65,23 @@ class TestCliConfigure(unittest.TestCase):
         self.assertEqual(0, result.exit_code)
 
 
-class TestCliDoctor(unittest.TestCase):
-    def setUp(self):
-        RedisClipboard.instance().conn = fakeredis.FakeStrictRedis()
-
+class TestCliDoctor(CliTestCase):
     def test_success(self):
         result = CliRunner().invoke(cli.doctor)
         self.assertFalse(result.exception)
         self.assertEqual(0, result.exit_code)
         self.assertIn(f"Settings file: {Settings.PATH}", result.output)
-        self.assertIn(f"Namespace: {Settings.instance().namespace()}", result.output)
+        self.assertIn("Namespace: default", result.output)
         self.assertIn("Connection: OK", result.output)
 
     def test_connection_failure(self):
-        server = fakeredis.FakeServer()
-        server.connected = False
-        RedisClipboard.instance().conn = fakeredis.FakeStrictRedis(server=server)
+        self.server.connected = False
         result = CliRunner().invoke(cli.doctor)
         self.assertEqual(1, result.exit_code)
         self.assertIn("Connection failed.", result.output)
 
 
-class TestCliCopyPaste(unittest.TestCase):
-    def setUp(self):
-        RedisClipboard.instance().conn = fakeredis.FakeStrictRedis()
-
+class TestCliCopyPaste(CliTestCase):
     def test_flow(self):
         runner = CliRunner()
         sample_data = os.urandom(1024)
@@ -82,15 +89,13 @@ class TestCliCopyPaste(unittest.TestCase):
             with open("input.dat", "wb") as input_file:
                 input_file.write(sample_data)
 
-            with open("input.dat", "rb") as input_file:
-                result = runner.invoke(cli.copy, "input.dat")
-                self.assertFalse(result.exception)
-                self.assertEqual(0, result.exit_code)
+            result = runner.invoke(cli.copy, "input.dat")
+            self.assertFalse(result.exception)
+            self.assertEqual(0, result.exit_code)
 
-            with open("output.dat", "wb") as output_file:
-                result = runner.invoke(cli.paste, "output.dat")
-                self.assertFalse(result.exception)
-                self.assertEqual(0, result.exit_code)
+            result = runner.invoke(cli.paste, "output.dat")
+            self.assertFalse(result.exception)
+            self.assertEqual(0, result.exit_code)
 
             with open("output.dat", "rb") as output_file:
                 self.assertEqual(sample_data, output_file.read())
