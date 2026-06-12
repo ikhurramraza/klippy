@@ -17,6 +17,15 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[dependency-groups]
+dev = [
+    "black==26.5.1",
+    "fakeredis",
+    "flake8",
+    "isort",
+    "pytest",
+]
+
 [project.urls]
 Homepage = "https://github.com/ikhurramraza/klippy"
 
