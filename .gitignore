@@ -9,4 +9,4 @@ build/
 dist/
 
 # Environments
-venv/
+.venv/
