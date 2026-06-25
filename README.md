@@ -36,6 +36,35 @@ klippy paste | cat
 klippy clear
 ```
 
+## 🛠️ Development
+
+This repo ships a [DevPod](https://devpod.sh/)-compatible devcontainer that provisions
+Python 3.14, a Redis sidecar (pre-configured so `klippy doctor` passes out of the box),
+and the Claude CLI. Your Claude login is stored on a named volume, so you only authenticate
+once even across rebuilds.
+
+```bash
+# Start the workspace without launching an IDE
+devpod up . --ide none
+
+# Drop into a shell (the venv auto-activates on login)
+devpod ssh klippy
+```
+
+Inside the container, the project is at `/workspaces/klippy` with everything on `PATH`:
+
+```bash
+pytest                      # run the test suite (uses fakeredis, no Redis needed)
+ruff check . && black .     # lint and format
+klippy doctor               # verify the connection to the Redis sidecar
+echo "hello" | klippy copy && klippy paste
+
+claude                      # the Claude CLI, ready to use
+```
+
+Edit with vim/your editor of choice over SSH. To rebuild from scratch (auth still
+persists): `devpod up . --recreate --ide none`.
+
 ## 🧞‍♂️ Wishlist
 
 - Introduce clipboard history

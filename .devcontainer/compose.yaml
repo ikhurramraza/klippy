@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+      - claude:/home/vscode/.claude # persists Claude auth + config (incl. statusline) across rebuilds
+      - config:/home/vscode/.config # persists gh login + cship.toml across rebuilds
+      - zsh:/home/vscode/.cache/zsh # persists shell history
+    command: sleep infinity
+    environment:
+      CLAUDE_CONFIG_DIR: /home/vscode/.claude
+      HISTFILE: /home/vscode/.cache/zsh/history
+      KLIPPY_REDIS_HOST: redis # informational; config.ini is the source of truth
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+
+volumes:
+  claude:
+  config:
+  zsh:
+  redis-data:
